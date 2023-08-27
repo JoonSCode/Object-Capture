@@ -50,11 +50,11 @@ struct ReconstructionView: View {
     }
     
     func reconstruction() async {
-        //        var configuration = PhotogrammetrySession.Configuration()
-        //        configuration.checkpointDirectory = appViewModel.directoryManager.snapshotsDirectoryURL
+        var configuration = PhotogrammetrySession.Configuration()
+        configuration.checkpointDirectory = appViewModel.directoryManager.snapshotsDirectoryURL
         
-        //            appViewModel.photogrammetrySession = try PhotogrammetrySession(input: appViewModel.directoryManager.imagesDirectoryURL, configuration: configuration)
-        guard let session = try? PhotogrammetrySession(input: appViewModel.directoryManager.imagesDirectoryURL)
+        guard let session = try? PhotogrammetrySession(input: appViewModel.directoryManager.imagesDirectoryURL,
+                                                       configuration: configuration)
         else {
             return
         }
@@ -77,10 +77,9 @@ struct ReconstructionView: View {
                         os_log("[log]: RealityKit has finished processing a request.")
                     case .requestProgress(_, let fractionComplete):
                         await MainActor.run {
-////                            reconstructionProgress = fractionComplete
+                            reconstructionProgress = fractionComplete
                         }
-                        
-                        //                    os_log("[log]: Periodic progress update \(fractionComplete). Update UI here.")
+                        os_log("[log]: Periodic progress update \(fractionComplete). Update UI here.")
                     case .requestProgressInfo:
                         os_log("[log]: Periodic progress info update.")
                     case .inputComplete:

@@ -10,7 +10,7 @@ import RealityKit
 
 struct ContentView: View {
     @EnvironmentObject var appViewModel: AppViewModel
-    var forMock: Bool = true
+    var forMock: Bool = false
     
     var body: some View {
         if forMock {
