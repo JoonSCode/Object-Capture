@@ -18,7 +18,7 @@ struct CapturePrimaryView: View {
         if !sessionCanStart {
             VStack {
                 Spacer()
-                Button {
+                RoundRectangleButton {
                     if appViewModel.startNewCapture() {
                         sessionCanStart = true
                     }
@@ -26,8 +26,6 @@ struct CapturePrimaryView: View {
                     Text("start new Capture")
                         .foregroundStyle(.black)
                 }
-                .padding()
-                .background(RoundedRectangle(cornerRadius: 15).fill(.white))
                 Spacer()
             }
             .onAppear(perform: {
@@ -42,7 +40,7 @@ struct CapturePrimaryView: View {
         }
         else {
             ZStack {
-                ObjectCaptureView(session: session).padding(.bottom)
+                ObjectCaptureView(session: session)
                 switch session.state {
                 case .initializing:
                     EmptyView()
@@ -52,14 +50,12 @@ struct CapturePrimaryView: View {
                         Text("Ready")
                             .foregroundStyle(.black)
                         Spacer()
-                        Button {
+                        RoundRectangleButton {
                             session.startDetecting()
                         } label: {
                             Text("Start Detecting")
                                 .foregroundStyle(.black)
                         }
-                        .padding()
-                        .background(RoundedRectangle(cornerRadius: 15).fill(.white))
                     }
                     
                 case .detecting:
@@ -68,22 +64,18 @@ struct CapturePrimaryView: View {
                             .foregroundStyle(.black)
                         Spacer()
                         HStack {
-                            Button {
+                            RoundRectangleButton {
                                 session.resetDetection()
                             } label: {
                                 Text("Reset")
                                     .foregroundStyle(.black)
                             }
-                            .padding()
-                            .background(RoundedRectangle(cornerRadius: 15).fill(.white))
-                            Button {
+                            RoundRectangleButton {
                                 session.startCapturing()
                             } label: {
                                 Text("Start Capturing")
                                     .foregroundStyle(.black)
                             }
-                            .padding()
-                            .background(RoundedRectangle(cornerRadius: 15).fill(.white))
                         }.padding()
                     }
                     
@@ -93,14 +85,12 @@ struct CapturePrimaryView: View {
                             .foregroundStyle(.black)
                         Spacer()
                         if session.canRequestImageCapture {
-                            Button {
+                            RoundRectangleButton {
                                 session.requestImageCapture()
                             } label: {
                                 Text("requestImageCapture")
                                     .foregroundStyle(.black)
                             }
-                            .padding()
-                            .background(RoundedRectangle(cornerRadius: 15).fill(.white))
                         }
                     }
                 case .finishing:
@@ -112,7 +102,6 @@ struct CapturePrimaryView: View {
                     
                 case .failed(let error):
                     CapturePrimaryView()
-                    //                    Text(error.localizedDescription)
                     
                 @unknown default:
                     Text("unknown default")

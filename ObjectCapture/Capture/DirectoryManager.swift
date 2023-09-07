@@ -10,14 +10,17 @@ import Foundation
 final class DirectoryManager: ObservableObject {
     var scansDirectoryURL: URL
     var timeStampDirectoryURL: URL
+    var objectDirectoryURL: URL
     var imagesDirectoryURL: URL
     var snapshotsDirectoryURL: URL
     
     init?(mock: Bool = false) {
         let rootDirectory = DirectoryManager.getDocumentsDirectory()
-        guard let scansURL = DirectoryManager.createDirectoryIfNotExists(at: rootDirectory) else { return nil }
+        guard let scansURL = DirectoryManager.createDirectoryIfNotExists(at: rootDirectory), 
+        let objectURL = DirectoryManager.createDirectoryIfNotExists(at: scansURL.appendingPathComponent("Objects", isDirectory: true)) else { return nil }
         
         self.scansDirectoryURL = scansURL
+        self.objectDirectoryURL = objectURL
         
         if mock {
             let fileManager = FileManager.default
@@ -48,7 +51,7 @@ final class DirectoryManager: ObservableObject {
         }
     }
     
-    private static func getDocumentsDirectory() -> URL {
+    static func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         return paths[0].appendingPathComponent("Scans")
     }
@@ -66,6 +69,38 @@ final class DirectoryManager: ObservableObject {
             }
         }
         return url
+    }
+    
+    static func fileList() -> [URL] {
+        let rootDirectory = DirectoryManager.getDocumentsDirectory()
+        guard let scansURL = DirectoryManager.createDirectoryIfNotExists(at: rootDirectory),
+        let objectURL = DirectoryManager.createDirectoryIfNotExists(at: scansURL.appendingPathComponent("Objects", isDirectory: true)) else { return [] }
+        
+        do {
+            let fileManager = FileManager.default
+            
+            // 디렉토리 내의 파일 목록을 가져옵니다.
+            let files = try fileManager.contentsOfDirectory(at: objectURL, includingPropertiesForKeys: nil)
+            
+            return files.filter{ $0.pathExtension == "usdz" }
+        } catch {
+            print("파일 목록을 가져오는 데 오류가 발생했습니다: \(error)")
+            return []
+        }
+    }
+    
+    static func fileList(in url: URL) -> [URL] {
+        do {
+            let fileManager = FileManager.default
+            
+            // 디렉토리 내의 파일 목록을 가져옵니다.
+            let files = try fileManager.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)
+            
+            return files
+        } catch {
+            print("파일 목록을 가져오는 데 오류가 발생했습니다: \(error)")
+            return []
+        }
     }
     
     static func printFiles(in url: URL) {

@@ -66,14 +66,14 @@ struct ReconstructionView: View {
                 for try await output in session.outputs  {
                     switch output {
                     case .processingComplete:
-                        os_log("[log]: RealityKit has processed all requests.")
-                    case .requestError:
-                        os_log("[log]: Request encountered an error.")
-                    case .requestComplete:
                         await MainActor.run {
                             reconstructionFinished = true
                             shouldShowProgressView = false
                         }
+                        os_log("[log]: RealityKit has processed all requests.")
+                    case .requestError:
+                        os_log("[log]: Request encountered an error.")
+                    case .requestComplete:
                         os_log("[log]: RealityKit has finished processing a request.")
                     case .requestProgress(_, let fractionComplete):
                         await MainActor.run {

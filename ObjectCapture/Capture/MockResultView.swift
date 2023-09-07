@@ -12,10 +12,10 @@ struct MockResultView: View {
     
     @State var fileName: String = ""
     var savedFileURL: URL {
-        appViewModel.directoryManager.scansDirectoryURL.appendingPathComponent(savedFileName)
+        appViewModel.directoryManager.objectDirectoryURL.appendingPathComponent(savedFileName)
     }
     private var savedFileName: String {
-        return "\(UUID().uuidString)/\(fileName).usdz"
+        return "\(fileName).usdz"
     }
     @State var showReconstruction: Bool = false
     
