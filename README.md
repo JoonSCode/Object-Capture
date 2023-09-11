@@ -9,4 +9,8 @@
 ## Prepare
 Tested in xcode 15.0 beta6, ios17 beta 6
 
+## Notice
+You should connect with a real device.
+With simulator xcode give us an error. It disappear when you connect real device
+
 <img src ="https://user-images.githubusercontent.com/45382324/266884132-fddfc7da-2fed-4760-bf7e-006564ebefa1.png" width="30%" height="30%" />
